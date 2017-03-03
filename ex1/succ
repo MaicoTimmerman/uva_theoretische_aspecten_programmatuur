@@ -1,0 +1,12 @@
+//Test if successor exists;
+-x/s{;
+    // Does not exist, thus create;
+    x.+s;
+    y=new;
+    y.+p;
+    y.p=x;
+    x.s=y;
+}{;
+    // Does exist, place output(y) to input(x);
+    y =x.s;
+}

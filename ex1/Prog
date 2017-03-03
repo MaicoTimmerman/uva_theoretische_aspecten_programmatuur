@@ -1,0 +1,63 @@
+//setZero;
+Z = new;
+y = Z;
+
+//succ;
+x=y;
+-x/s{; x.+s; y=new; y.+p; y.p=x; x.s=y; }{; y=x.s; };
+
+
+//succ;
+x=y;
+-x/s{; x.+s; y=new; y.+p; y.p=x; x.s=y; }{; y =x.s; };
+
+//Set the x1 to 2;
+x1=y;
+
+//succ;
+x=y;
+-x/s{; x.+s; y=new; y.+p; y.p=x; x.s=y; }{; y =x.s; };
+
+//Set the x2 to 3;
+x2=y;
+
+//START THE CODE FOR THE PROGRAM;
+
+//(x1 + 1);
+// succ;
+x=x1;
+-x/s{; x.+s; y=new; y.+p; y.p=x; x.s=y; }{;y =x.s; };
+
+x1=y;
+
+//(x2 + 1);
+
+// succ;
+x=x2;
+-x/s{; x.+s; y=new; y.+p; y.p=x; x.s=y; }{;y =x.s; };
+
+x2=y;
+
+// init for multiply;
+One = Z.s;
+x3 = x1;
+x4 = x2;
+y = x2;
+
+// Start multiply loop;
+L1;
+-x3==One{;
+    //decrement the down-wards counter by 1;
+    x3 = x3.p;
+
+    // Set variables of ready for the addition;
+    x1 = x4;
+    x2 = y;
+
+    // add;
+    L0;+x2==Z{;y = x1;}{;x = x1; -x/s{; x.+s; y=new; y.+p; y.p=x; x.s=y; }{; y=x.s;}; x1=y; x=x2; -x/p{; y=x; }{; y = x.p ;}; x2=y; ##L0; };
+
+    // Loop until x3 is equal to 1;
+    ##L1;
+}{;
+};

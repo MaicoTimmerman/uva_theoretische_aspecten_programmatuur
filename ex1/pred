@@ -1,0 +1,6 @@
+//Test if predecessor exists, assumes lower bound 0. Successors must have been passed on creation, thus just set output (y) to input (x);
+-x/p{;
+    y=x;
+}{;
+    y = x.p;
+}
