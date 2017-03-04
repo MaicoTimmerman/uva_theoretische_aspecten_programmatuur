@@ -1,0 +1,41 @@
+multiply = "
+    m1=x1;
+    m2=x2;
+    y=0;
+    +m1==0;
+    !;
+    decr m1;
+    incr y m2;
+    \\\\#4;
+";
+compile multiply;
+
+power = "
+    p1=x1;
+    p2=x2;
+    y=1;
+    +p2==0;
+    !;
+    decr p2;
+    x1=p1;
+    x2=y;
+    eval multiply;
+    \\\\#6;
+";
+compile power;
+
+k1 = 3;
+k2 = 4;
+k3 = 5;
+k4 = 6;
+
+x1 = k1;
+x2 = k2;
+eval power;
+k1 = y;
+
+x1 = k3;
+x2 = k4;
+eval power;
+k = y;
+incr k k1;

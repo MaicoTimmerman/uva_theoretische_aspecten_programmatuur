@@ -1,0 +1,39 @@
+S = new;
+SP = S;
+
+x = "maico";
+
+push="
+    tmp = new;
+    SP.+s;
+    SP.s = tmp;
+    tmp.+p;
+    tmp.p = SP;
+    SP = tmp;
+    SP.+v:str;
+    tmp=null;
+";
+compile push;
+
+pop="
+    +SP==S; !;
+    SP = SP.p;
+    SP.-s;
+    rgc;
+";
+compile pop;
+
+reverse="
+    +x==\"\"; !;
+    y = \"\";
+    eval push;
+    first x r1;
+    delfirst x;
+    SP.v = r1;
+    eval reverse;
+    append y SP.v;
+    eval pop;
+    !;
+";
+compile reverse;
+eval reverse;

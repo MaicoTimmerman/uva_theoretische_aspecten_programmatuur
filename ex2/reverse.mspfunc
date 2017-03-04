@@ -1,0 +1,13 @@
+function reverse(x:str):str "
+    +<>.x==\"\";
+    return <>.x;
+    <>.+l:str;
+    first <>.x <>.l;
+    delfirst <>.x;
+    <>.x = reverse(<>.x);
+    append <>.x <>.l;
+    return <>.x;
+";
+
+x = "maico";
+y = reverse(x);

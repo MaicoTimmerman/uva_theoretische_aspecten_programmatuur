@@ -1,0 +1,31 @@
+function multiply(x:int, y:int):int "
+    <>.+rv:int;
+    <>.rv=0;
+    L0;
+    +<>.x==0;
+    return <>.rv;
+    decr <>.x;
+    incr <>.rv <>.y;
+    ##L0;
+";
+
+function power(x:int, y:int):int "
+    <>.+rv:int;
+    <>.rv=1;
+    L0;
+    +<>.y==0;
+    return <>.rv;
+    decr <>.y;
+    <>.rv = multiply(<>.x, <>.rv);
+    ##L0;
+";
+
+k1 = 3;
+k2 = 4;
+k3 = 5;
+k4 = 6;
+
+k1 = power(k1, k2);
+k = power(k3, k4);
+
+incr k k1;
