@@ -169,6 +169,14 @@ wc2b.+a = output;
 wc3.+b = output;
 \end{minted}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{factory.png}
+    \caption{Fluid of factory using 3 working cells and 2 instances of wc2.}
+    \label{fig:factory}
+\end{figure}
+\FloatBarrier%
+
 After creating the fluid for the factory, the threads are spawned. Labeled jumps  are used to jump to the correct code.
 
 \begin{minted}[bgcolor=bg]{C}
@@ -188,7 +196,19 @@ fork #2;
 ##L3;
 \end{minted}
 
-The thread for working cell 1 (wc1) takes input from the \verb|input| and passes all \verb|A|'s  to working cell 2(wc2) and \verb|B|'s to working cell 3 (wc3). To take or put something into a shared resource, a lock is used. A lock is created using the field introduction instruction. Specifically, using this instruction as a test instruction. By testing if \verb|lock| can be created, we have an atomic instruction to lock the focus.
+The thread for working cell 1 (wc1) takes input from the \verb|input| and
+passes all \verb|A|'s  to working cell 2(wc2) and \verb|B|'s to working cell 3
+(wc3). To take or put something into a shared resource, a lock is used. A lock
+is created using the field introduction instruction. Specifically, using this
+instruction as a test instruction. By testing if \verb|lock| can be created, we
+have an atomic instruction to lock the focus.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{lock.png}
+    \caption{Example of locking in action.}
+    \label{fig:lock}
+\end{figure}
+\FloatBarrier%
 
 \begin{minted}[bgcolor=bg]{C}
 L1;
@@ -278,6 +298,7 @@ L2;
 };
 
 \end{minted}
+
 % =================================== REFERENCES ===================================
 
 % \clearpage
