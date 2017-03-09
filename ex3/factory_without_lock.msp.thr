@@ -1,0 +1,89 @@
+wc1 = new;
+wc2 = new;
+wc3 = new;
+input = new;
+output = new;
+channel12 = new;
+channel13 = new;
+
+wc1.+v:str;
+wc2.+v:str;
+wc3.+v:str;
+channel12.+v:str = "";
+channel13.+v:str = "";
+
+wc1.+a = channel12;
+channel12.+a1 = wc2;
+
+wc1.+b = channel13;
+channel13.+b = wc3;
+
+input.+q:str = "ABAB";
+output.+q:str = "";
+
+input.+ab = wc1;
+wc2.+a = output;
+wc3.+b = output;
+
+fork #2;
+##L1;
+fork #2;
+##L2;
+##L3;
+
+L1;
++wc1.v==""{;
+    first input.q wc1.v;
+    delfirst input.q;
+    ##L1;
+}{;
+    +wc1.v=="A"{;
+        +channel12.v==""{;
+            first wc1.v channel12.v;
+            delfirst wc1.v;
+        }{;
+        };
+        ##L1;
+    }{;
+    };
+
+    +wc1.v=="B"{;
+        +channel13.v==""{;
+            first wc1.v channel13.v;
+            delfirst wc1.v;
+        }{; };
+        ##L1;
+    }{; };
+    ##L1;
+};
+
+L2;
++wc2.v==""{;
+    +channel12.v==""; ##L2;
+    -channel12.+lock; ##L2;
+    +channel12.v==""{;
+    }{;
+        first channel12.v wc2.v;
+        delfirst channel12.v;
+    };
+    channel12.-lock;
+    ##L2;
+}{;
+    append output.q wc2.v;
+    delfirst wc2.v;
+    ##L2;
+};
+
+L3;
++wc3.v==""{;
+    +channel13.v==""{;
+    }{;
+        first channel13.v wc3.v;
+        delfirst channel13.v;
+    };
+    ##L3;
+}{;
+    append output.q wc3.v;
+    delfirst wc3.v;
+    ##L3;
+};
