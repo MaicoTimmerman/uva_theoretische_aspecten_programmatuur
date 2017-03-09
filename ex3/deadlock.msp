@@ -1,0 +1,37 @@
+wc1 = new;
+wc2 = new;
+wc3 = new;
+
+channel12 = new;
+channel13 = new;
+channel23 = new;
+channel32 = new;
+
+wc1.+v:str = "";
+wc2.+v:str = "A";
+wc3.+v:str = "B";
+
+channel12.+v:str = "";
+channel13.+v:str = "";
+channel23.+v:str = "A";
+channel32.+v:str = "B";
+
+input = new;
+output = new;
+
+input.+q:str = "";
+output.+q:str = "";
+
+input.+ab = wc1;
+
+wc1.+a = channel12;
+channel12.+a = wc2;
+wc2.+a = channel23;
+channel23.+a = wc3;
+wc3.+a = output;
+
+wc1.+b = channel13;
+channel13.+b = wc3;
+wc3.+b = channel32;
+channel32.+b = wc2;
+wc2.+b = output;

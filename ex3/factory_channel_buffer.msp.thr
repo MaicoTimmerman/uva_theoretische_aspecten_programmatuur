@@ -1,29 +1,40 @@
 wc1 = new;
 wc2 = new;
 wc3 = new;
-input = new;
-output = new;
+
 channel12 = new;
 channel13 = new;
+channel23 = new;
+channel32 = new;
 
-wc1.+v:str;
-wc2.+v:str;
-wc3.+v:str;
+wc1.+v:str = "";
+wc2.+v:str = "";
+wc3.+v:str = "";
+
 channel12.+v:str = "";
 channel13.+v:str = "";
+channel23.+v:str = "";
+channel32.+v:str = "";
 
-wc1.+a = channel12;
-channel12.+a1 = wc2;
+input = new;
+output = new;
 
-wc1.+b = channel13;
-channel13.+b = wc3;
-
-input.+q:str = "ABAB";
+input.+q:str = "ABABABABBAAABBA";
 output.+q:str = "";
 
 input.+ab = wc1;
-wc2.+a = output;
-wc3.+b = output;
+
+wc1.+a = channel12;
+channel12.+a = wc2;
+wc2.+a = channel23;
+channel23.+a = wc3;
+wc3.+a = output;
+
+wc1.+b = channel13;
+channel13.+b = wc3;
+wc3.+b = channel32;
+channel32.+b = wc2;
+wc2.+b = output;
 
 fork #2;
 ##L1;
@@ -51,36 +62,58 @@ L1;
         +channel13.v==""{;
             first wc1.v channel13.v;
             delfirst wc1.v;
-        }{; };
+        }{;
+        };
         ##L1;
-    }{; };
+    }{;
+    };
     ##L1;
 };
 
 L2;
 +wc2.v==""{;
+    +channel32.v==""{;
+    }{;
+        first channel32.v wc2.v;
+        delfirst channel32.v;
+        ##L2;
+    };
     +channel12.v==""{;
     }{;
         first channel12.v wc2.v;
         delfirst channel12.v;
+        ##L2;
     };
     ##L2;
 }{;
-    append output.q wc2.v;
+    -wc2.v=="A";
+        append channel23.v wc2.v;
+    -wc2.v=="B";
+        append output.q wc2.v;
     delfirst wc2.v;
     ##L2;
 };
 
 L3;
 +wc3.v==""{;
+    +channel23.v==""{;
+    }{;
+        first channel23.v wc2.v;
+        delfirst channel23.v;
+        ##L3;
+    };
     +channel13.v==""{;
     }{;
         first channel13.v wc3.v;
         delfirst channel13.v;
+        ##L3;
     };
     ##L3;
 }{;
-    append output.q wc3.v;
+    -wc3.v=="A";
+        append output.q wc3.v;
+    -wc3.v=="B";
+        append channel32.v wc3.v;
     delfirst wc3.v;
     ##L3;
 };
