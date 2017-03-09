@@ -128,176 +128,148 @@
 
 \section{Factory}
 
-The factory is started by creating the working cells and the channels.
-
-\begin{minted}[bgcolor=bg]{C}
-// Create all the new nodes.
-wc1 = new;
-wc2a = new;
-wc2b = new;
-wc3 = new;
-input = new;
-output = new;
-channel12 = new;
-channel13 = new;
-
-// Create all value attributes for the nodes.
-wc1.+v:str;
-wc2a.+v:str;
-wc2b.+v:str;
-wc3.+v:str;
-channel12.+v:str = "";
-channel13.+v:str = "";
-
-// Connect working cell 1 (wc1) to working cell 2 (wc2) using channel12.
-wc1.+a = channel12;
-channel12.+a2 = wc2a;
-channel12.+a1 = wc2b;
-
-// Connect working cell 1 (wc1) to working cell 3 (wc3) using channel12.
-wc1.+b = channel13;
-channel13.+b = wc3;
-
-// Set the initial queue's for in- and output.
-input.+q:str = "ABAB";
-output.+q:str = "";
-
-// Connect input and output.
-input.+ab = wc1;
-wc2a.+a = output;
-wc2b.+a = output;
-wc3.+b = output;
-\end{minted}
+\subsection{3.2.1 Opdracht 1}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{factory.png}
+    \includegraphics[width=\linewidth]{without_lock.png}
+    \caption{Factory for which locking is unneccesary.}
+    \label{fig:without_lock}
+\end{figure}
+\FloatBarrier%
+
+The initial factory seen in \autoref{fig:without_lock} is a factory that does
+not require any form of locking. Writing to the channel is done twice, first
+filling the channel with a value and afterwards emptying the channel (writing
+empty). The working cells can never reach a situation in which they
+overwrite/remove a value before it is read. They check if the channel is
+empty/filled and act accordingly with an atomic action. Thus in a single cycle,
+the value is changed. For reading of the value it actually takes 2 cycles,
+however the value in the channel is only removed after it has been loaded to
+the working cell. The working cell at the other end of the channel will never
+act, since there is still a value in the channel.
+
+An example of a working cell reading a value of a channel and outputting to the
+output queue is displayed in the code below. \footnote{Implementation in:
+factory\_without\_lock.msp.thr}
+
+\begin{minted}[bgcolor=bg]{C}
+// Label to reference the entry point of the code for this thread.
+L2;
+// Test if the working cell is empty.
++wc2.v==""{;
+    // Cell is empty, test if a value can be fetched.
+    +channel12.v==""{;
+        // Channel is also empty, do nothing.
+    }{;
+        // Channel has values, thus fetch it into the working cell.
+        first channel12.v wc2.v;
+        delfirst channel12.v;
+    };
+    // Restart the thread.
+    ##L2;
+}{;
+    // Cell has a value, thus write to output.
+    append output.q wc2.v;
+    delfirst wc2.v;
+    ##L2;
+};
+\end{minted}
+
+\subsection{3.2.2 Opdracht 2}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{factory.png}
     \caption{Fluid of factory using 3 working cells and 2 instances of wc2.}
     \label{fig:factory}
 \end{figure}
 \FloatBarrier%
+The fluid of the factory after adding an additional working cell 2 can be seen in \autoref{fig:factory}.
 
-After creating the fluid for the factory, the threads are spawned. Labeled jumps  are used to jump to the correct code.
+Since both working cell 2's use the \verb|channel12|, atomic operations are
+need to make sure both the cells do not read the same value to process of the
+channel. For this problem a locking system has been introduced. The instruction
+for field introduction is atomic and returns \verb|true| or \verb|false|
+depending on success. By executing this instruction as a test-instruction, locks
+can be placed on the channel and working cells can act accordingly. If the lock
+is set successfully, the cell takes the value and empties the channel. If not,
+it will retry the next instruction.
+
+An example of the implementation of the code for working cell 2 is displayed below. An \verb|a| or \verb|b| is appended to the name for referencing the correct foci. \footnote{Implementation in: factory\_with\_lock.msp.thr}
 
 \begin{minted}[bgcolor=bg]{C}
-// Spawn working cell 1 (wc1) thread.
-fork #2;
-##L1;
-
-// Spawn working cell 2 (wc2) thread.
-fork #2;
-##L2;
-
-// Spawn another working cell 2 (wc2) thread.
-fork #2;
-##L22;
-
-// Use the left-over thread for working cell 3 (wc3)
-##L3;
+// Label to reference the entry point of the code for this thread.
+L22;
+// Test if the working cell is empty.
++wc2b.v==""{;
+    // Test if the channel has a value, if not, restart thread.
+    +channel12.v==""; ##L22;
+    // Channel has a value, thus try to lock, if fails, restart thread.
+    -channel12.+lock; ##L22;
+    // Double check if the value has not been taken yet by another thread.
+    +channel12.v==""{;
+        // Value is already taken.
+    }{;
+        // Process value by taking from channel and placing in working cell.
+        first channel12.v wc2b.v;
+        // Removed channels value.
+        delfirst channel12.v;
+    };
+    // Unlock and restart thread.
+    channel12.-lock;
+    ##L22;
+}{;
+    // Cell has a value, thus write to output.
+    append output.q wc2b.v;
+    delfirst wc2b.v;
+    ##L22;
+};
 \end{minted}
 
-The thread for working cell 1 (wc1) takes input from the \verb|input| and
-passes all \verb|A|'s  to working cell 2(wc2) and \verb|B|'s to working cell 3
-(wc3). To take or put something into a shared resource, a lock is used. A lock
-is created using the field introduction instruction. Specifically, using this
-instruction as a test instruction. By testing if \verb|lock| can be created, we
-have an atomic instruction to lock the focus.
+An example of the lock in action can be seen in \autoref{fig:lock_in_action}.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{lock.png}
-    \caption{Example of locking in action.}
-    \label{fig:lock}
+    \includegraphics[width=\linewidth]{lock_in_action.png}
+    \caption{Lock placed on channel12, to prevent other wc2's of accessing it.}
+    \label{fig:lock_in_action}
 \end{figure}
 \FloatBarrier%
 
-\begin{minted}[bgcolor=bg]{C}
-L1;
-// Determine offloading/loading.
-+wc1.v==""{;
-    // Try to fetch lock for input, if it fails, restart thread.
-    -input.+lock; ##L1;
+\subsection{4.1.1 Opdracht 1}
 
-    // Test if there is something in the input.
-    +input.v==""{;
-    }{;
-        // Load the first value into the working cell and remove from input.
-        first input.q wc1.v;
-        delfirst input.q;
-    };
-    // Unlock and restart.
-    input.-lock;
-    ##L1;
-}{;
-    // 'A' values need to be passed to channel12.
-    +wc1.v=="A"{;
-        // Try to fetch lock for channel12, it it fails, restart thread.
-        -channel12.+lock; ##L1;
-        +channel12.v==""{;
-            first wc1.v channel12.v;
-            delfirst wc1.v;
-        }{;
-        };
-        // Unlock and restart.
-        channel12.-lock;
-        ##L1;
-    }{;
-    };
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{deadlock.png}
+    \caption{Deadlock between wc2 and wc3. Both channels and working cells filled.}
+    \label{fig:deadlock}
+\end{figure}
+\FloatBarrier%
 
-    // 'B' values need to be passed to channel13.
-    +wc1.v=="B"{;
-        // Try to fetch lock for channel13, it it fails, restart thread.
-        -channel13.+lock; ##L1;
-        +channel13.v==""{;
-            // Load the first value into the working cell and remove from channel.
-            first wc1.v channel13.v;
-            delfirst wc1.v;
-        }{;
-        };
-        // Unlock and restart.
-        channel13.-lock;
-        ##L1;
-    }{;
-    };
-    ##L1;
-};
-\end{minted}
+In the new factory products can flow between working cell 2 and 3 in both
+directions. This can cause deadlock, as can been seen \autoref{fig:deadlock}.
+In this example figure the requirement for deadlock can be seen. Both channels
+are filled with their products and the working cells hold products, which need
+to input into the channels. However for the product to be placed in the
+channel, the channel needs to be emptied by the other working cell. Since both
+working cells suffer this problem, a situation of deadlock is created. Neither
+of the cells can do anything.
 
-Code for working cell 2 (wc2) is very similar to the code of working cell 1
-(wc1). When the addition wc2 cell was spawned, the code was duplicated and
-\verb|wc2a| was replaced with \verb|wc2b|, however the inner working is exactly
-the same. For working cell 3 (wc3) the code is also the same, however it works
-with \verb|channel13| and \verb|wc3|.
+\subsection{4.1.2 Opdracht 2}
 
-\begin{minted}[bgcolor=bg]{C}
-L2;
-+wc2a.v==""{;
-    // Check if there are values in channel12, if not, restart thread.
-    +channel12.v==""; ##L2;
-    // Try to fetch lock for channel12, it it fails, restart thread.
-    -channel12.+lock; ##L2;
-    +channel12.v==""{;
-    }{;
-        // Move value from channel12 to working cell.
-        first channel12.v wc2a.v;
-        delfirst channel12.v;
-    };
-    // Unlock and restart.
-    channel12.-lock;
-    ##L2;
-}{;
-    // Try to fetch lock for output, it it fails, restart thread.
-    -output.+lock; ##L2;
+By changing the channels from single product to multiple product buffers, the
+deadlock is solved .\footnote{Implementation in:
+factory\_channel\_buffer.msp.thr} A working cell is always able to place its
+product into the
 
-    // Move value from working cell to end of output.
-    append output.q wc2a.v;
-    delfirst wc2a.v;
+channel, after which it can take the first value of the channel. Since there
+are no working cells which use the same channel on the same side, locking is
+not needed here.
 
-    // Unlock and restart.
-    output.-lock;
-    ##L2;
-};
-
-\end{minted}
+In theory this solution will always work, however, when a single working cell
+taking output cannot keep up with the input, the system can still fail. In
+theory channels can have infinitely large buffers, however in practice, there
+are limits. This means that there is a option of buffer-overflow.
 
 % =================================== REFERENCES ===================================
 
