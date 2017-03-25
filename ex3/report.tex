@@ -139,9 +139,9 @@
 \FloatBarrier%
 
 The initial factory seen in \autoref{fig:without_lock} is a factory that does
-not require any form of locking. Writing to the channel is done twice, first
+not require any form of locking. There are two write operations, first
 filling the channel with a value and afterwards emptying the channel (writing
-empty). The working cells can never reach a situation in which they
+empty string). The working cells can never reach a situation in which they
 overwrite/remove a value before it is read. They check if the channel is
 empty/filled and act accordingly with an atomic action. Thus in a single cycle,
 the value is changed. For reading of the value it actually takes 2 cycles,
@@ -169,7 +169,7 @@ L2;
     // Restart the thread.
     ##L2;
 }{;
-    // Cell has a value, thus write to output.
+    // Cell has a value, thus write to output and restart thread.
     append output.q wc2.v;
     delfirst wc2.v;
     ##L2;
@@ -187,14 +187,14 @@ L2;
 \FloatBarrier%
 The fluid of the factory after adding an additional working cell 2 can be seen in \autoref{fig:factory}.
 
-Since both working cell 2's use the \verb|channel12|, atomic operations are
+Since both working cell 2 use the \verb|channel12|, atomic operations are
 need to make sure both the cells do not read the same value to process of the
 channel. For this problem a locking system has been introduced. The instruction
 for field introduction is atomic and returns \verb|true| or \verb|false|
 depending on success. By executing this instruction as a test-instruction, locks
 can be placed on the channel and working cells can act accordingly. If the lock
 is set successfully, the cell takes the value and empties the channel. If not,
-it will retry the next instruction.
+it will retry the same instruction.
 
 An example of the implementation of the code for working cell 2 is displayed below. An \verb|a| or \verb|b| is appended to the name for referencing the correct foci. \footnote{Implementation in: factory\_with\_lock.msp.thr}
 
@@ -248,12 +248,11 @@ An example of the lock in action can be seen in \autoref{fig:lock_in_action}.
 
 In the new factory products can flow between working cell 2 and 3 in both
 directions. This can cause deadlock, as can been seen \autoref{fig:deadlock}.
-In this example figure the requirement for deadlock can be seen. Both channels
-are filled with their products and the working cells hold products, which need
-to input into the channels. However for the product to be placed in the
-channel, the channel needs to be emptied by the other working cell. Since both
-working cells suffer this problem, a situation of deadlock is created. Neither
-of the cells can do anything.
+Both channels are filled with their products and the working cells hold
+products, which need to input into the channels. However for the product to be
+placed in the channel, the channel needs to be emptied by the other working
+cell. Since both working cells suffer this problem, a situation of deadlock is
+created. Neither of the cells can do anything.
 
 \subsection{4.1.2 Opdracht 2}
 

@@ -1,0 +1,60 @@
+digraph graph0 {
+	node [label="\N"];
+	graph [rankdir=LR,
+		bb="0,0,614,308"];
+	n1 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="4,11"];
+	n2 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=unfilled, fillcolor=lightgray, width="0.083333", pos="78,11"];
+	n3 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="78,87"];
+	n4 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="171,49"];
+	n5 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="307,151"];
+	n6 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="405,177"];
+	n7 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="307,303"];
+	n8 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="405,265"];
+	n9 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="307,75"];
+	n10 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="405,68"];
+	n11 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="4,49"];
+	n12 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="78,49"];
+	n13 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="405,241"];
+	n14 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="511,177"];
+	n15 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="171,208"];
+	n16 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="307,189"];
+	n17 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=invis, width="0.083333", pos="171,136"];
+	n18 [label="", shape=circle, height="0.097222", fixedsize=true, fontsize=12, style=filled, group=2, color=black, width="0.083333", pos="307,49"];
+	n19 [label="\"\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.36111", fontcolor=red4, pos="307,11"];
+	n20 [label="\"\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.36111", fontcolor=red4, pos="511,101"];
+	n21 [label="\"\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.36111", fontcolor=red4, pos="511,297"];
+	n22 [label="\"\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.36111", fontcolor=red4, pos="511,61"];
+	n23 [label="\"A\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.47222", fontcolor=red4, pos="405,209"];
+	n24 [label="\"\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.36111", fontcolor=red4, pos="405,113"];
+	n25 [label="\"BAB\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.69444", fontcolor=red4, pos="171,104"];
+	n26 [label="\"\"", shape=plaintext, height="0.31944", fixedsize=false, fontsize=12, style=unfilled, width="0.36111", fontcolor=red4, pos="601,177"];
+	n1 -> n2 [dir=forward, arrowsize="0.8", fontsize=12, label=null, color=blue, fontcolor=blue, weight=4, pos="e,74.292,11 7.5692,11 17.995,11 48.752,11 65.973,11", lp="41,18.5"];
+	n3 -> n4 [dir=forward, arrowsize="0.8", fontsize=12, label=wc1, color=blue, fontcolor=blue, weight=4, pos="e,167.46,50.445 81.532,85.557 94.365,80.313 138.86,62.131 159.86,53.55", lp="114,85.5"];
+	n5 -> n6 [dir=forward, arrowsize="0.8", fontsize=12, label=wc2a, color=blue, fontcolor=blue, weight=4, pos="e,401.81,175.33 310.76,151.35 320.64,152.33 348.08,155.48 370,162 378.36,164.49 387.41,168.4 394.21,171.6", lp="354,169.5"];
+	n7 -> n8 [dir=forward, arrowsize="0.8", fontsize=12, label=wc2b, color=blue, fontcolor=blue, weight=4, pos="e,401.76,266.6 310.46,301.92 320.03,298.9 347.64,289.99 370,281 378.37,277.63 387.64,273.37 394.54,270.09", lp="354,299.5"];
+	n9 -> n10 [dir=forward, arrowsize="0.8", fontsize=12, label=wc3, color=blue, fontcolor=blue, weight=4, pos="e,401.27,68.266 310.72,74.734 324.24,73.768 371.14,70.419 393.26,68.838", lp="354,80.5"];
+	n11 -> n12 [dir=forward, arrowsize="0.8", fontsize=12, label=input, color=blue, fontcolor=blue, weight=4, pos="e,74.292,49 7.5692,49 17.995,49 48.752,49 65.973,49", lp="41,56.5"];
+	n13 -> n14 [dir=forward, arrowsize="0.8", fontsize=12, label=output, color=blue, fontcolor=blue, weight=4, pos="e,508.1,178.79 408.15,239.12 418.47,232.97 452.21,212.85 480,196 487.12,191.68 495.14,186.76 501.24,183.01", lp="460,226.5"];
+	n15 -> n16 [dir=forward, arrowsize="0.8", fontsize=12, label=channel12, color=blue, fontcolor=blue, weight=4, pos="e,303.29,189.52 174.64,207.49 191.94,205.07 266.3,194.69 295.33,190.63", lp="245,208.5"];
+	n17 -> n18 [dir=forward, arrowsize="0.8", fontsize=12, label=channel13, color=blue, fontcolor=blue, weight=4, pos="e,304.35,51.007 174.31,134.6 179.18,132.49 188.48,128.31 196,124 235.36,101.42 279.21,69.688 297.83,55.875", lp="245,120.5"];
+	n4 -> n19 [dir=forward, arrowsize="0.8", fontsize=12, label="v:str", color=red4, fontcolor=red4, weight=4, pos="e,293.84,12.779 174.04,47.382 180.95,43.767 198.45,34.961 214,30 238.1,22.313 266.73,17.013 285.8,14.002", lp="245,37.5"];
+	n6 -> n20 [dir=forward, arrowsize="0.8", fontsize=12, label="v:str", color=red4, fontcolor=red4, weight=4, pos="e,497.76,97.286 406.19,173.98 411.51,160.51 433.24,106.37 440,102 454.54,92.598 474.49,93.21 489.54,95.679", lp="460,109.5"];
+	n8 -> n21 [dir=forward, arrowsize="0.8", fontsize=12, label="v:str", color=red4, fontcolor=red4, weight=4, pos="e,497.96,293.06 408.53,266.06 421.04,269.84 463.95,282.8 490.11,290.69", lp="460,294.5"];
+	n10 -> n22 [dir=forward, arrowsize="0.8", fontsize=12, label="v:str", color=red4, fontcolor=red4, weight=4, pos="e,497.9,61.273 408.67,67.493 415.03,66.633 428.54,64.896 440,64 456.7,62.694 475.67,61.93 489.79,61.499", lp="460,71.5"];
+	n16 -> n23 [dir=forward, arrowsize="0.8", fontsize=12, label="v:str", color=red4, fontcolor=red4, weight=4, pos="e,387.91,209.47 310.1,191 315.51,194.36 327.14,201.08 338,204 351.45,207.62 366.94,208.95 379.63,209.34", lp="354,215.5"];
+	n18 -> n24 [dir=forward, arrowsize="0.8", fontsize=12, label="v:str", color=red4, fontcolor=red4, weight=4, pos="e,391.94,111.37 309.34,51.265 312.05,53.944 316.58,58.597 320,63 329.07,74.688 326.3,81.949 338,91 351.31,101.3 369.65,106.88 383.77\
+,109.84", lp="354,113.5"];
+	n4 -> n16 [dir=forward, arrowsize="0.8", fontsize=12, label=a, pos="e,303.64,187.32 173.34,51.738 178.12,57.429 189.12,71.083 196,84 206.71,104.11 199.5,114.43 214,132 225.86,146.38 274.48,172.35 \
+296.31,183.58", lp="245,178.5"];
+	n16 -> n6 [dir=forward, arrowsize="0.8", fontsize=12, label=a2, pos="e,401.27,177.46 310.72,188.54 324.24,186.89 371.14,181.15 393.26,178.44", lp="354,192.5"];
+	n16 -> n8 [dir=forward, arrowsize="0.8", fontsize=12, label=a1, pos="e,401.66,263.64 308.67,191.68 312.92,198.32 324.73,215.79 338,227 355.77,242 380.32,254.16 394.23,260.41", lp="354,254.5"];
+	n4 -> n18 [dir=forward, arrowsize="0.8", fontsize=12, label=b, pos="e,303.29,49 174.64,49 191.87,49 265.66,49 294.95,49", lp="245,56.5"];
+	n18 -> n10 [dir=forward, arrowsize="0.8", fontsize=12, label=b, pos="e,401.87,66.067 310.76,48.69 320.64,47.979 348.08,46.678 370,52 378.76,54.128 388.02,58.461 394.81,62.082", lp="354,59.5"];
+	n12 -> n25 [dir=forward, arrowsize="0.8", fontsize=12, label="q:str", color=red4, fontcolor=red4, weight=4, pos="e,145.86,107.38 78.393,52.262 79.656,61.16 84.478,85.927 100,97 110.75,104.67 124.87,107.17 137.68,107.47", lp="114,114.5"];
+	n14 -> n26 [dir=forward, arrowsize="0.8", fontsize=12, label="q:str", color=red4, fontcolor=red4, weight=4, pos="e,587.67,177 514.87,177 525.86,177 557.88,177 579.63,177", lp="556,184.5"];
+	n12 -> n4 [dir=forward, arrowsize="0.8", fontsize=12, label=ab, pos="e,167.46,49 81.532,49 94.249,49 138.07,49 159.29,49", lp="114,56.5"];
+	n6 -> n14 [dir=forward, arrowsize="0.8", fontsize=12, label=a, pos="e,507.35,177 408.53,177 422.61,177 475.2,177 499.07,177", lp="460,184.5"];
+	n8 -> n14 [dir=forward, arrowsize="0.8", fontsize=12, label=a, pos="e,510.29,179.97 408.35,264.1 421.39,260.53 468.56,247.15 480,237 495.1,223.6 503.92,201.08 508.07,187.77", lp="460,261.5"];
+	n10 -> n14 [dir=forward, arrowsize="0.8", fontsize=12, label=b, pos="e,508.07,174.94 406.74,70.607 412.69,79.522 432.35,108.7 440,117 459.75,138.43 486.96,159.48 501.28,170.02", lp="460,159.5"];
+	n16 -> n16 [dir=forward, arrowsize="0.8", fontsize=12, label=lock, pos="e,309.93,191.14 304.07,191.14 295.6,198.5 296.58,210 307,210 314.65,210 317.21,203.8 314.68,197.59", lp="307,217.5"];
+}

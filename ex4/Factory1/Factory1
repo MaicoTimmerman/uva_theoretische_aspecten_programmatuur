@@ -1,0 +1,207 @@
+data module Products
+begin
+    exports
+    begin
+	sorts
+	    PRODUCT
+	functions
+	    A : -> PRODUCT
+	    B : -> PRODUCT
+    end
+end Products
+
+data module ID
+begin
+    exports
+    begin
+	sorts
+	    ID
+	functions
+	    IN : -> ID
+	    OUT : -> ID
+	    ID1 : -> ID
+	    ID2 : -> ID
+	    ID31 : -> ID
+	    ID32 : -> ID
+	    ID4 : -> ID
+    end
+end ID
+
+process module IO
+begin
+    exports
+    begin
+	atoms
+	    snd : ID # ID # PRODUCT
+	    rec : ID # ID # PRODUCT
+	    comm : ID # ID # PRODUCT
+    end
+    imports
+	Products,
+	ID
+    communications
+	snd(s, d, p) | rec(s, d, p) = comm(s, d, p) for s in ID, d in ID, p in PRODUCT
+end IO
+    
+process module WC1
+begin
+    exports
+    begin
+	processes
+	    WC1
+    end
+    imports
+	IO
+    atoms
+	wc1 : PRODUCT
+    definitions
+	WC1 =
+	    sum(p in PRODUCT,
+		rec(IN, ID1, p) .
+		wc1(p) .
+		(
+		    [p = A] -> snd(ID1, ID2, p)
+		+   [p = B] -> (snd(ID1, ID31, p) + snd(ID1, ID32, p))
+		)
+	    ) . WC1
+end WC1
+
+process module WC2
+begin
+    exports
+    begin
+	processes
+	    WC2
+    end
+    imports
+	IO
+    atoms
+	wc2 : PRODUCT
+    definitions
+	WC2 =
+	    sum(p in PRODUCT,
+		rec(ID1, ID2, p) .
+		wc2(p) .
+		snd(ID2, ID4, p)
+	    ) . WC2
+end WC2
+
+process module WC31
+begin
+    exports
+    begin
+	processes
+	    WC31
+    end
+    imports
+	IO
+    atoms
+	wc31 : PRODUCT
+    definitions
+	WC31 =
+	    sum(p in PRODUCT,
+		rec(ID1, ID31, p) .
+		wc31(p) .
+		snd(ID31, ID4, p)
+	    ) . WC31
+end WC31
+
+process module WC32
+begin
+    exports
+    begin
+	processes
+	    WC32
+    end
+    imports
+	IO
+    atoms
+	wc32 : PRODUCT
+    definitions
+	WC32 =
+	    sum(p in PRODUCT,
+		rec(ID1, ID32, p) .
+		wc32(p) .
+		snd(ID32, ID4, p)
+	    ) . WC32
+end WC32
+
+process module WC4
+begin
+    exports
+    begin
+	processes
+	    WC4
+    end
+    imports
+	IO
+    atoms
+	wc4 : PRODUCT
+    definitions
+	WC4 = sum(p in PRODUCT,
+		sum(d in ID,
+		    rec(d, ID4, p) .
+		    wc4(p) .
+		    snd(ID4, OUT, p)
+		)
+	    ) . WC4
+end WC4
+
+process module In
+begin
+    exports
+    begin
+	processes
+	    In
+    end
+    imports
+	IO
+    atoms
+	input : PRODUCT
+    definitions
+	In = sum(p in PRODUCT,
+		input(p) .
+		snd(IN, ID1, p)
+	    ) . In
+end In
+
+process module Out
+begin
+    exports
+    begin
+	processes
+	    Out
+    end
+    imports
+	IO
+    atoms
+	output : PRODUCT
+    definitions
+	Out =
+	    sum(p in PRODUCT,
+		sum(d in ID,
+		    rec(d, OUT, p) .
+		    output(p)
+		)
+	    ) . Out
+end Out
+
+process module Factory1
+begin
+    imports
+	In, Out,
+	WC1, WC2,
+	WC31, WC32,
+	WC4
+    processes
+	Factory1
+    sets
+	of atoms
+	    H = { snd(s, d, p), rec(s, d, p) | s in ID, d in ID, p in PRODUCT }
+    definitions
+	Factory1 =
+	    encaps(H,
+		In || Out || WC1 || WC2 || WC31 || WC32 || WC4
+	    )
+end Factory1
+
